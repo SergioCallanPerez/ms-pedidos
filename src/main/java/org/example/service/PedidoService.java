@@ -3,6 +3,7 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.*;
 import org.example.entities.*;
+import org.example.exception.R2dbcExceptionUtil;
 import org.example.repository.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -78,7 +79,8 @@ public class PedidoService {
                                         return response;
                                     })
                             );
-                });
+                })
+                .onErrorMap(R2dbcExceptionUtil::handleR2dbcException);
     }
 
     public Flux<Pedido> obtenerPedidos() {
