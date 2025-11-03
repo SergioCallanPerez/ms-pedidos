@@ -20,6 +20,25 @@ Iniciar primero compilando ms-config-server.
 
 ---
 
+### Cambio de perfil
+
+Si se desea cambiar de perfil, cambiar el valor de profile active en application.yml:
+
+#### Ejemplo:
+
+    profiles:
+        active: dev
+por 
+
+    profiles:
+        active: prd
+
+o
+
+    profiles:
+        active: qa
+---
+
 ## 2. Base de datos
 
 ### Bases de datos
