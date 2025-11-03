@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: API de Pedidos
+  description: API REST para la gestión de pedidos y sus estados.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8082
+    description: Servidor local
+
+paths:
+  /api/pedidos:
+    post:
+      summary: Crear pedido
+      description: Crea un nuevo pedido con su cliente, fecha, estado y detalles.
+      operationId: crearPedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cliente:
+                  type: string
+                  example: Juan Pérez
+                fecha:
+                  type: string
+                  format: date-time
+                  example: 2025-11-02T15:30:00
+                estado:
+                  type: string
+                  example: PENDIENTE
+                detalles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productoId:
+                        type: integer
+                        example: 7
+                      cantidad:
+                        type: integer
+                        example: 2
+      responses:
+        "201":
+          description: Pedido creado exitosamente
+        "400":
+          description: Error en los datos del pedido
+
+    get:
+      summary: Listar pedidos
+      description: Obtiene la lista de todos los pedidos registrados.
+      operationId: listarPedidos
+      responses:
+        "200":
+          description: Lista de pedidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PedidoResponse'
+
+  /api/pedidos/{id}:
+    get:
+      summary: Obtener pedido por ID
+      description: Retorna la información de un pedido específico según su ID.
+      operationId: obtenerPedidoPorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Pedido encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PedidoResponse'
+        "404":
+          description: Pedido no encontrado
+
+    delete:
+      summary: Eliminar pedido
+      description: Elimina un pedido por su ID.
+      operationId: eliminarPedido
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 7
+      responses:
+        "204":
+          description: Pedido eliminado exitosamente
+        "404":
+          description: Pedido no encontrado
+
+  /api/pedidos/{id}/estado:
+    put:
+      summary: Actualizar estado del pedido
+      description: Actualiza el estado de un pedido existente.
+      operationId: actualizarEstadoPedido
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 6
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                estado:
+                  type: string
+                  example: CANCELADO
+      responses:
+        "200":
+          description: Estado actualizado correctamente
+        "400":
+          description: Estado inválido o error de validación
+        "404":
+          description: Pedido no encontrado
+
+components:
+  schemas:
+    PedidoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        cliente:
+          type: string
+          example: Juan Pérez
+        fecha:
+          type: string
+          format: date-time
+          example: 2025-11-02T15:30:00
+        total:
+          type: number
+          format: double
+          example: 120.50
+        estado:
+          type: string
+          example: PENDIENTE
+        detalles:
+          type: array
+          items:
+            type: object
+            properties:
+              productoId:
+                type: integer
+                example: 7
+              cantidad:
+                type: integer
+                example: 2
+              subtotal:
+                type: number
+                format: double
+                example: 60.25
