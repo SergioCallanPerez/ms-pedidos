@@ -29,13 +29,13 @@ sonarqube {
 }
 
 
-test {
+tasks.test {
     useJUnitPlatform()
-    finalizedBy jacocoTestReport
+    finalizedBy(tasks.jacocoTestReport)
 }
 
-jacocoTestReport {
-    dependsOn test
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
     reports {
         xml.required = true
         html.required = true
