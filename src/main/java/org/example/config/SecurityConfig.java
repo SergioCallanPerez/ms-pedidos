@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .authorizeExchange(exchanges -> exchanges
                         // [A] PERMITIR OPTIONS
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .pathMatchers("/actuator/**").permitAll()
 
                         // [B] PERMITIR RUTAS DE PRODUCTO
                         .pathMatchers("/api/**").permitAll()
