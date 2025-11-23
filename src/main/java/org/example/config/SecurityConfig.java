@@ -34,7 +34,7 @@ public class SecurityConfig {
                         .pathMatchers("/actuator/**").permitAll()
 
                         // [B] PERMITIR RUTAS DE PRODUCTO
-                        .pathMatchers("/api/**").permitAll()
+                        
 
                         // [C] CUALQUIER OTRA RUTA: Requerir autenticación.
                         .anyExchange().authenticated()
